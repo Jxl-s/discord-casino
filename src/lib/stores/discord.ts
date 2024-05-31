@@ -11,6 +11,7 @@ export const discordFailLoad = writable(false);
 
 // Discord SDK setup
 const discordSdk = new DiscordSDK(PUBLIC_DISCORD_CLIENT_ID);
+
 export async function setupDiscordSdk() {
 	await discordSdk.ready();
 
