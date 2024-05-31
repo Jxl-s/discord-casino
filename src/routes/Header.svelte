@@ -7,7 +7,7 @@
 	const userPicture = `https://cdn.discordapp.com/avatars/${$discordAuth?.user.id}/${userPictureId}.webp?size=128`;
 </script>
 
-<nav class="w-full bg-dark-2 shadow-md py-2 px-2 flex justify-between items-center">
+<header class="w-full bg-dark-2 shadow-md py-2 px-2 flex justify-between items-center">
 	<span class="opacity-75 w-full text-left flex gap-2 items-center">
 		<img
 			src={userPicture}
@@ -18,13 +18,12 @@
 		Welcome, {username}
 	</span>
 
-	<a
-		class="text-blurple-1 font-bold text-2xl hover:brightness-125 duration-300 w-full text-center"
-		href="/"
-	>
-		Discord
-		<span>Casino</span>
-	</a>
+	<div class="w-full text-center">
+		<a class="text-blurple-1 font-bold text-2xl hover:brightness-125 duration-300" href="/">
+			Discord
+			<span>Casino</span>
+		</a>
+	</div>
 
 	<span class="font-semibold w-full text-right me-2">Balance: $20</span>
-</nav>
+</header>
