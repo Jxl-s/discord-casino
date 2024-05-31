@@ -13,7 +13,6 @@ export const discordFailLoad = writable(false);
 const discordSdk = new DiscordSDK(PUBLIC_DISCORD_CLIENT_ID);
 export async function setupDiscordSdk() {
 	await discordSdk.ready();
-	console.log('Discord SDK is ready!');
 
 	try {
 		// Get the code from the Discord SDK
