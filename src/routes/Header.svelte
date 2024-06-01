@@ -8,12 +8,10 @@
 
 	const userPicture = `https://cdn.discordapp.com/avatars/${$discordAuth?.user.id}/${userPictureId}.webp?size=128`;
 
-	const pageNames = {
-		'/': 'Home',
-		'/play': 'Choose a Game',
-		'/settings': 'Settings',
-		'/leaderboards': 'Leaderboards'
-	} as Record<string, string>;
+	const goBack = () => {
+		// pop the last page from the history
+		history.back();
+	};
 </script>
 
 <header class="w-full bg-dark-2 shadow-md py-2 px-2 flex justify-between items-center">
@@ -26,8 +24,10 @@
 				aria-hidden="true"
 			/>
 			Welcome, {username}
-		{:else if $page.url.pathname in pageNames}
-			<span class="ms-2">{pageNames[$page.url.pathname]}</span>
+		{:else}
+			<button class="ms-2 hover:brightness-125 duration-300" on:click={() => goBack()}
+				>Go Back</button
+			>
 		{/if}
 	</span>
 
