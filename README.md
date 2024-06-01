@@ -1,6 +1,13 @@
 # Discord Casino
 
-A minimalist example of a Discord activity, as a simple gambling fake with **fake currency**. Developed using Discord's Embedded App SDK and SvelteKit.
+**Note: I don't condone gambling, and this is just a fun project for learning purposes.**
+
+A minimalist example of a Discord activity, as a simple casino game with **fake currency**. Developed using Discord's Embedded App SDK and SvelteKit.
+
+Stats are synchronized across sessions using a JWT token, and actions are sent to the server to process game logic.
+
+![Snapshot](./assets/snapshot.png)
+![Snapshot](./assets/snapshot2.png)
 
 ## How to run
 
@@ -28,8 +35,6 @@ yarn dev
 
 Use cloudflare tunnels to expose the local server to the internet, then add a URL mapping with the new URL into the activity settings of the portal.
 
-
 ```bash
 cloudflared tunnel --url http://localhost:5173
 ```
-
