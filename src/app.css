@@ -2,8 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+	font-family: 'Niramit';
+	src: url('/fonts/Niramit/Niramit-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Niramit';
+	src: url('/fonts/Niramit/Niramit-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
 html,
 body {
+	font-family: 'Niramit', sans-serif;
 	margin: 0;
 	padding: 0;
 
