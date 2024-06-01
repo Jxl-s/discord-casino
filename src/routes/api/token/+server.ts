@@ -1,6 +1,7 @@
 import { DISCORD_CLIENT_SECRET } from '$env/static/private';
 import { PUBLIC_DISCORD_CLIENT_ID } from '$env/static/public';
-import { createToken, getSession, setSession } from '$lib/sessions.server.js';
+import { Deck } from '$lib/games/blackjack/deck';
+import { createToken, getSession, setSession } from '$lib/sessions.server';
 import { json } from '@sveltejs/kit';
 import { z } from 'zod';
 
@@ -61,6 +62,7 @@ export async function POST({ request, cookies }) {
 		// Create a session as well
 		if (!getSession(userId)) {
 			setSession(userId, {
+				userId,
 				balance: 100,
 				lastUpdate: Date.now()
 			});

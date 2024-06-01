@@ -57,6 +57,16 @@ export async function setupDiscordSdk() {
 
 		// Update balance
 		await updateBalance();
+
+		discordSdk.commands.setActivity({
+			activity: {
+				details: "Gambling my kid's college savings",
+				state: 'In the casino',
+				party: {
+					size: [1, 1]
+				}
+			}
+		});
 	} catch (e) {
 		console.error(e);
 		discordFailLoad.set(true);

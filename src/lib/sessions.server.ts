@@ -1,7 +1,10 @@
 import { JWT_SECRET } from '$env/static/private';
 import type { Cookies } from '@sveltejs/kit';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
+import type { Deck } from './games/blackjack/deck';
+
 interface Session {
+	userId: string;
 	balance: number;
 	lastUpdate: number;
 }
