@@ -61,3 +61,12 @@ export async function setupDiscordSdk() {
 		discordFailLoad.set(true);
 	}
 }
+
+// Prevent session from being deleted
+setInterval(async () => {
+	// Ping the app every minute
+	const response = await fetch('/api/sessions/ping');
+	if (response.ok) {
+		console.log('Pinged the server');
+	}
+}, 60 * 1000);

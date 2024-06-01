@@ -1,9 +1,10 @@
-import { extractSession, getSession, verifyToken } from '$lib/sessions.server';
+import { extractSession } from '$lib/sessions.server.js';
 import { error, json } from '@sveltejs/kit';
 
 export async function GET({ cookies }) {
 	const session = extractSession(cookies);
 	if (!session) return error(401, 'Unauthorized');
 
-	return json({ data: session });
+	session.lastUpdate = Date.now();
+	return json({ status: 'ok' });
 }
