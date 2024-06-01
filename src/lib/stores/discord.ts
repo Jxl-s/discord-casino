@@ -2,6 +2,7 @@ import { PUBLIC_DISCORD_CLIENT_ID } from '$env/static/public';
 
 import { DiscordSDK } from '@discord/embedded-app-sdk';
 import { writable } from 'svelte/store';
+import { browser } from '$app/environment';
 import { updateBalance } from './game';
 
 type PromiseType<T extends Promise<any>> = T extends Promise<infer U> ? U : never;
@@ -63,10 +64,13 @@ export async function setupDiscordSdk() {
 }
 
 // Prevent session from being deleted
-setInterval(async () => {
-	// Ping the app every minute
-	const response = await fetch('/api/sessions/ping');
-	if (response.ok) {
-		console.log('Pinged the server');
-	}
-}, 60 * 1000);
+if (browser) {
+	console.log('Starting ping interval');
+	setInterval(async () => {
+		// Ping the app every minute
+		const response = await fetch('/api/sessions/ping');
+		if (response.ok) {
+			console.log('Pinged the server');
+		}
+	}, 60 * 1000);
+}
