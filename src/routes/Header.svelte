@@ -3,6 +3,7 @@
 	import { balance } from '$lib/stores/game';
 	import { page } from '$app/stores';
 	import numberWithCommas from '$lib/numberWithCommas';
+	import Button from '$lib/components/Button.svelte';
 
 	const username = $discordAuth?.user.global_name ?? $discordAuth?.user.username ?? 'Guest';
 	const userPictureId = $discordAuth?.user.avatar;
@@ -39,5 +40,10 @@
 		</a>
 	</div>
 
-	<span class="font-semibold w-full text-right me-2 {$balance < 0 ? 'text-red-500' : ''}">Balance: ${numberWithCommas($balance)}</span>
+	<div class="w-full text-right me-w">
+		<span class="font-semibold {$balance <= 0 ? 'text-red-500' : ''}">
+			Balance: ${numberWithCommas($balance)}
+		</span>
+		<Button theme="secondary" className="py-1 px-2 ms-2 font-semibold">Reset?</Button>
+	</div>
 </header>

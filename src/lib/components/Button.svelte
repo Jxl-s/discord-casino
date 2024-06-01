@@ -13,7 +13,7 @@
 </script>
 
 <button
-	class="rounded-lg w-full shadow-md hover:brightness-125 duration-300 text-center {className} {themes[
+	class="rounded-lg shadow-md hover:brightness-125 duration-300 text-center {className} {themes[
 		theme
 	]}"
 	on:click={() => dispatch('click')}

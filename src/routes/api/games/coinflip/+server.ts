@@ -3,7 +3,7 @@ import { error, json } from '@sveltejs/kit';
 import { z } from 'zod';
 
 const schema = z.object({
-	amount: z.number().min(1),
+	amount: z.number().int().min(1),
 	side: z.enum(['heads', 'tails'])
 });
 
