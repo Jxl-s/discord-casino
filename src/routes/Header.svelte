@@ -4,16 +4,35 @@
 	import { page } from '$app/stores';
 	import numberWithCommas from '$lib/numberWithCommas';
 	import Button from '$lib/components/Button.svelte';
+	import { goto } from '$app/navigation';
 
 	const username = $discordAuth?.user.global_name ?? $discordAuth?.user.username ?? 'Guest';
 	const userPictureId = $discordAuth?.user.avatar;
 
 	const userPicture = `https://cdn.discordapp.com/avatars/${$discordAuth?.user.id}/${userPictureId}.webp?size=128`;
 
-	const goBack = () => {
+	function goBack() {
 		// pop the last page from the history
 		history.back();
-	};
+	}
+
+	async function handleReset() {
+		const response = await fetch('/api/sessions/reset', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			console.error('An error occurred while resetting the game');
+			return;
+		}
+
+		const data = await response.json();
+		balance.set(data.balance);
+		goto('/');
+	}
 </script>
 
 <header class="w-full bg-dark-2 shadow-md py-2 px-2 flex justify-between items-center">
@@ -44,6 +63,10 @@
 		<span class="font-semibold {$balance <= 0 ? 'text-red-500' : ''}">
 			Balance: ${numberWithCommas($balance)}
 		</span>
-		<Button theme="secondary" className="py-1 px-2 ms-2 font-semibold">Reset?</Button>
+		{#if $balance <= 0}
+			<Button theme="secondary" className="py-1 px-2 ms-2 font-semibold" on:click={handleReset}>
+				Reset?
+			</Button>
+		{/if}
 	</div>
 </header>

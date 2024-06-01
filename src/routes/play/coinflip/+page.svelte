@@ -48,6 +48,7 @@
 
 		const data = await response.json();
 		betResult = data.result === 'heads' ? BetStatus.Heads : BetStatus.Tails;
+		errorText = '';
 		balance.set(data.balance);
 	}
 </script>
@@ -107,7 +108,9 @@
 							${numberWithCommas(betAmount)}
 						</span>. Your current balance is ${numberWithCommas($balance)}
 					</p>
-					<Button className="py-2 mt-2" on:click={() => (betResult = BetStatus.None)}>Close</Button>
+					<Button className="py-2 mt-2 w-full" on:click={() => (betResult = BetStatus.None)}
+						>Close</Button
+					>
 				{/if}
 			</div>
 		</div>
