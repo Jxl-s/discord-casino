@@ -28,6 +28,22 @@
 	let playerHand: ICard[] = [];
 	let dealerHand: ICard[] = [];
 
+	async function reset() {
+		gameStarting = false;
+		gameStarted = true;
+		gameStatus = GameStatus.None;
+
+		roundStarting = false;
+		roundStarted = false;
+
+		playerTurn = false;
+		betAmount = 0;
+		betError = '';
+
+		playerHand = [];
+		dealerHand = [];
+	}
+
 	async function handleStartGame() {
 		gameStarting = true;
 		const response = await fetch('/api/games/blackjack', {
@@ -51,6 +67,9 @@
 	}
 
 	async function startRound() {
+		// Reset previous values
+		// reset();
+
 		if (betAmount <= 0) {
 			betError = 'Bet amount must be greater than 0';
 			return;
@@ -83,6 +102,11 @@
 
 		roundStarted = true;
 		playerTurn = true;
+
+		if (responseJson.result === 'blackjack') {
+			gameStatus = GameStatus.Blackjack;
+			playerTurn = false;
+		}
 	}
 
 	async function hit() {
@@ -111,17 +135,22 @@
 		if (responseJson.result === 'lose') {
 			gameStatus = GameStatus.Lose;
 			playerTurn = false;
+			gameStarted = false;
 		} else if (responseJson.result === 'win') {
 			gameStatus = GameStatus.Win;
 			playerTurn = false;
+			gameStarted = false;
 		} else if (responseJson.result === 'blackjack') {
 			gameStatus = GameStatus.Blackjack;
 			playerTurn = false;
+			gameStarted = false;
 		} else if (responseJson.result === 'tie') {
 			gameStatus = GameStatus.Tie;
 			playerTurn = false;
+			gameStarted = false;
 		} else if (responseJson.result === '21') {
 			playerTurn = false;
+			gameStarted = false;
 		}
 	}
 
@@ -147,15 +176,19 @@
 		if (responseJson.result === 'lose') {
 			gameStatus = GameStatus.Lose;
 			playerTurn = false;
+			gameStarted = false;
 		} else if (responseJson.result === 'win') {
 			gameStatus = GameStatus.Win;
 			playerTurn = false;
+			gameStarted = false;
 		} else if (responseJson.result === 'blackjack') {
 			gameStatus = GameStatus.Blackjack;
 			playerTurn = false;
+			gameStarted = false;
 		} else if (responseJson.result === 'tie') {
 			gameStatus = GameStatus.Tie;
 			playerTurn = false;
+			gameStarted = false;
 		}
 	}
 </script>
@@ -173,23 +206,24 @@
 {#if roundStarted}
 	<Table {playerHand} {dealerHand} />
 {/if}
-<div class="mt-2">
-	{#if gameStatus === GameStatus.Win}
-		<p class="text-green-500 text-lg">You win!</p>
-	{/if}
-	{#if gameStatus === GameStatus.Lose}
-		<p class="text-red-500 text-lg">You lose!</p>
-	{/if}
-	{#if gameStatus === GameStatus.Blackjack}
-		<p class="text-yellow-500 text-lg">Blackjack!</p>
-	{/if}
-	{#if gameStatus === GameStatus.Tie}
-		<p class="text-yellow-500 text-lg">Tie!</p>
-	{/if}
-</div>
 
 <!-- Interactions menu -->
 <div class="max-w-lg w-full mt-2 flex flex-col gap-2">
+	<div class="mt-2 text-center">
+		{#if gameStatus === GameStatus.Win}
+			<p class="text-green-500 text-lg">You win!</p>
+		{/if}
+		{#if gameStatus === GameStatus.Lose}
+			<p class="text-red-500 text-lg">You lose!</p>
+		{/if}
+		{#if gameStatus === GameStatus.Blackjack}
+			<p class="text-yellow-500 text-lg">Blackjack!</p>
+		{/if}
+		{#if gameStatus === GameStatus.Tie}
+			<p class="text-yellow-500 text-lg">Tie!</p>
+		{/if}
+	</div>
+
 	{#if gameStarted}
 		{#if roundStarted}
 			<div class="flex gap-2 mt-2">
@@ -227,11 +261,15 @@
 				<p class="text-red-500 text-sm">{betError}</p>
 			{/if}
 		{/if}
-	{:else}
+	{:else if gameStatus === GameStatus.None}
 		<Button
 			class="w-full font-semibold py-2 mt-3"
 			on:click={handleStartGame}
 			disabled={gameStarting}>Start Game</Button
+		>
+	{:else}
+		<Button class="w-full font-semibold py-2 mt-3" on:click={() => reset()} disabled={gameStarting}
+			>Do Another Game</Button
 		>
 	{/if}
 </div>

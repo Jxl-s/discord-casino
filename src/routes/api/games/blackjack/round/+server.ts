@@ -1,3 +1,4 @@
+import { getHandValue } from '$lib/games/blackjack/deck.js';
 import { getBlackjackSession } from '$lib/games/blackjack/index.server.js';
 import { extractSession } from '$lib/sessions.server.js';
 import { error, json } from '@sveltejs/kit';
@@ -20,14 +21,27 @@ export async function POST({ cookies, request }) {
 		const { amount } = data;
 
 		// Upadte the balance
-        blackjackSession.amount = amount;
+		blackjackSession.amount = amount;
 		session.balance -= amount;
 
 		// Distribute cards
 		const { deck } = blackjackSession;
-        blackjackSession.started = true
+		blackjackSession.started = true;
 		blackjackSession.playerHand = [deck.getCard(), deck.getCard()];
 		blackjackSession.dealerHand = [deck.getCard(), deck.getCard()];
+
+		// Handle blackjack
+		if (getHandValue(blackjackSession.playerHand) === 21) {
+			session.balance += amount * 2.5;
+			blackjackSession.started = false;
+
+			return json({
+				balance: session.balance,
+				playerHand: blackjackSession.playerHand,
+				dealerCard: blackjackSession.dealerHand[0],
+				result: 'blackjack'
+			});
+		}
 
 		return json({
 			balance: session.balance,
