@@ -2,6 +2,7 @@ import { PUBLIC_DISCORD_CLIENT_ID } from '$env/static/public';
 
 import { DiscordSDK } from '@discord/embedded-app-sdk';
 import { writable } from 'svelte/store';
+import { updateBalance } from './game';
 
 type PromiseType<T extends Promise<any>> = T extends Promise<infer U> ? U : never;
 type AuthType = PromiseType<ReturnType<typeof discordSdk.commands.authenticate>>;
@@ -52,6 +53,9 @@ export async function setupDiscordSdk() {
 
 		// Update the store
 		discordAuth.set(auth);
+
+		// Update balance
+		await updateBalance();
 	} catch (e) {
 		console.error(e);
 		discordFailLoad.set(true);

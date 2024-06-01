@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { discordAuth } from '$lib/stores/discord';
+	import { balance } from '$lib/stores/game';
 	import { page } from '$app/stores';
 
 	const username = $discordAuth?.user.global_name ?? $discordAuth?.user.username ?? 'Guest';
@@ -37,5 +38,5 @@
 		</a>
 	</div>
 
-	<span class="font-semibold w-full text-right me-2">Balance: $100</span>
+	<span class="font-semibold w-full text-right me-2">Balance: ${$balance}</span>
 </header>
