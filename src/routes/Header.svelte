@@ -37,5 +37,5 @@
 		</a>
 	</div>
 
-	<span class="font-semibold w-full text-right me-2">Balance: $20</span>
+	<span class="font-semibold w-full text-right me-2">Balance: $100</span>
 </header>

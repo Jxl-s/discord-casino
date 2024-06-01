@@ -1,5 +1,6 @@
 import { DISCORD_CLIENT_SECRET } from '$env/static/private';
 import { PUBLIC_DISCORD_CLIENT_ID } from '$env/static/public';
+import { createToken } from '$lib/sessions.server.js';
 import { json } from '@sveltejs/kit';
 import { z } from 'zod';
 
@@ -7,7 +8,7 @@ const schema = z.object({
 	code: z.string()
 });
 
-export async function POST({ request }) {
+export async function POST({ request, cookies }) {
 	const body = await request.json();
 
 	// Try to parse the body
@@ -27,13 +28,40 @@ export async function POST({ request }) {
 		});
 
 		// Retrieve the access_token from the response
-		const { access_token } = await response.json();
+		const resJson = await response.json();
+		const { access_token } = resJson;
 		if (!access_token) {
 			throw new Error('Failed to fetch access_token');
 		}
 
+		// Try fetching the user ID to create a JWT
+		const userResponse = await fetch('https://discord.com/api/users/@me', {
+			headers: {
+				Authorization: `Bearer ${access_token}`
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to fetch user data');
+		}
+
+		// Create a token with the user ID
+		const userJson = await userResponse.json();
+		const userId = userJson.id;
+		const token = createToken({
+			sub: userId
+		});
+
+		cookies.set('token', token, {
+			path: '/',
+			maxAge: 60 * 60 * 10,
+			sameSite: 'lax',
+			secure: true
+		});
+
 		return json({ access_token }, { status: 200 });
-	} catch (error) {
-		return json({ message: 'Error fetching ' }, { status: 400 });
+	} catch (e) {
+		console.error(e);
+		return json({ message: 'Error fetching' }, { status: 400 });
 	}
 }
