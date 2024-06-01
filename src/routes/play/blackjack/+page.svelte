@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
+	import Card from './Card.svelte';
 
 	let gameStarted = false;
 	let playerTurn = false;
@@ -17,21 +18,20 @@
 
 <!-- Table is here -->
 <!-- TODO: Add placeholders and real cards -->
-<div class="mt-6 flex gap-4 {gameStarted ? 'opacity-100' : 'opacity-25'}">
+<div class="mt-6 flex gap-4 {gameStarted ? 'opacity-100' : 'opacity-100'}">
 	<div>
 		<p>You:</p>
 		<div class="flex gap-2">
-			<div style="width: 50px; height: 100px; background-color: white;"></div>
-			<div style="width: 50px; height: 100px; background-color: white;"></div>
+			<Card value={'A'} suit="Hearts" />
+			<Card value={'7'} suit="Diamonds" />
+			<Card value={'2'} suit="Clubs" />
 		</div>
 	</div>
 	<div>
 		<p>Dealer:</p>
 		<div class="flex gap-2">
-			<div style="width: 50px; height: 100px; background-color: gray;"></div>
-			<div style="width: 50px; height: 100px; background-color: gray;"></div>
-			<div style="width: 50px; height: 100px; background-color: gray;"></div>
-			<div style="width: 50px; height: 100px; background-color: gray;"></div>
+			<Card faceDown={true} />
+			<Card value={'7'} suit="Spades" />
 		</div>
 	</div>
 </div>
