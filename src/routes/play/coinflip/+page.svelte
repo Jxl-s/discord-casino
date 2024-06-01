@@ -73,7 +73,7 @@
 			<label for="coinflip-side">Chosen side</label>
 			<select
 				id="coinflip-side"
-				class="w-full bg-dark-2 shadow-md rounded-lg px-4 text-lg py-2"
+				class="w-full bg-dark-2 shadow-md rounded-lg px-4 text-lg py-1"
 				bind:value={betSide}
 			>
 				<option value={BetStatus.Heads}>Heads</option>
