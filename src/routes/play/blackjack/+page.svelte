@@ -1,0 +1,59 @@
+<script lang="ts">
+	import Button from '$lib/components/Button.svelte';
+
+	let betAmount = 0;
+</script>
+
+<h1 class="text-2xl font-bold">Blackjack</h1>
+<p class="text-lg text-white/80 max-w-xl text-center">
+	The game where you try to get as close to 21 without going over.
+</p>
+<p class="text-sm text-white/80 max-w-lg text-center opacity-50">
+	Hint: The deck is not shuffled after each round. You may use a certain strategy to increase your
+	chances of winning.
+</p>
+
+<!-- Table is here -->
+<div class="mt-6 flex gap-4">
+	<div>
+		<p>You:</p>
+		<div class="flex gap-2">
+			<div style="width: 50px; height: 100px; background-color: blue;"></div>
+			<div style="width: 50px; height: 100px; background-color: blue;"></div>
+		</div>
+	</div>
+	<div>
+		<p>Dealer:</p>
+		<div class="flex gap-2">
+			<div style="width: 50px; height: 100px; background-color: red;"></div>
+			<div style="width: 50px; height: 100px; background-color: red;"></div>
+			<div style="width: 50px; height: 100px; background-color: red;"></div>
+			<div style="width: 50px; height: 100px; background-color: red;"></div>
+		</div>
+	</div>
+</div>
+
+<!-- Interactions menu -->
+<div class="max-w-lg w-full mt-2 flex flex-col gap-2">
+	<label for="coinflip-bet-amount">Bet Amount</label>
+	<div class="grid grid-cols-2 gap-2">
+		<div>
+			<input
+				id="coinflip-bet-amount"
+				step="1"
+				class="w-full bg-dark-2 shadow-md rounded-lg px-4 text-lg py-2"
+				type="number"
+				bind:value={betAmount}
+			/>
+		</div>
+		<Button class="w-full font-semibold">Start Game</Button>
+	</div>
+	<div>
+		<div class="flex gap-2">
+			<Button class="w-full font-semibold py-2">Hit</Button>
+			<Button class="w-full font-semibold py-2">Stand</Button>
+			<Button class="w-full font-semibold py-2">Double Down</Button>
+			<Button class="w-full font-semibold py-2">Split</Button>
+		</div>
+	</div>
+</div>
