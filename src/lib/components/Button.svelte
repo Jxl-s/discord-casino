@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	export let theme: keyof typeof themes = 'primary';
+	export let disabled = false;
 
 	const themes = {
 		primary: 'bg-blue-500 text-white',
@@ -11,9 +12,10 @@
 </script>
 
 <button
-	class="rounded-lg shadow-md hover:brightness-125 duration-300 text-center {$$props.class} {themes[
+	class="rounded-lg shadow-md {disabled ? '' : 'hover:brightness-125'} duration-300 text-center disabled:opacity-50 {$$props.class} {themes[
 		theme
 	]}"
+	{disabled}
 	on:click={() => dispatch('click')}
 >
 	<slot />

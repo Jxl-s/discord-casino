@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 
+	let gameStarted = false;
+	let playerTurn = false;
 	let betAmount = 0;
 </script>
 
@@ -14,21 +16,22 @@
 </p>
 
 <!-- Table is here -->
-<div class="mt-6 flex gap-4">
+<!-- TODO: Add placeholders and real cards -->
+<div class="mt-6 flex gap-4 {gameStarted ? 'opacity-100' : 'opacity-25'}">
 	<div>
 		<p>You:</p>
 		<div class="flex gap-2">
-			<div style="width: 50px; height: 100px; background-color: blue;"></div>
-			<div style="width: 50px; height: 100px; background-color: blue;"></div>
+			<div style="width: 50px; height: 100px; background-color: white;"></div>
+			<div style="width: 50px; height: 100px; background-color: white;"></div>
 		</div>
 	</div>
 	<div>
 		<p>Dealer:</p>
 		<div class="flex gap-2">
-			<div style="width: 50px; height: 100px; background-color: red;"></div>
-			<div style="width: 50px; height: 100px; background-color: red;"></div>
-			<div style="width: 50px; height: 100px; background-color: red;"></div>
-			<div style="width: 50px; height: 100px; background-color: red;"></div>
+			<div style="width: 50px; height: 100px; background-color: gray;"></div>
+			<div style="width: 50px; height: 100px; background-color: gray;"></div>
+			<div style="width: 50px; height: 100px; background-color: gray;"></div>
+			<div style="width: 50px; height: 100px; background-color: gray;"></div>
 		</div>
 	</div>
 </div>
@@ -46,14 +49,14 @@
 				bind:value={betAmount}
 			/>
 		</div>
-		<Button class="w-full font-semibold">Start Game</Button>
+		<Button class="w-full font-semibold">Place Bet</Button>
 	</div>
 	<div>
 		<div class="flex gap-2">
-			<Button class="w-full font-semibold py-2">Hit</Button>
-			<Button class="w-full font-semibold py-2">Stand</Button>
-			<Button class="w-full font-semibold py-2">Double Down</Button>
-			<Button class="w-full font-semibold py-2">Split</Button>
+			<Button class="w-full font-semibold py-2" disabled={!playerTurn}>Hit</Button>
+			<Button class="w-full font-semibold py-2" disabled={!playerTurn}>Stand</Button>
+			<Button class="w-full font-semibold py-2" disabled={!playerTurn}>Double Down</Button>
+			<Button class="w-full font-semibold py-2" disabled={!playerTurn}>Split</Button>
 		</div>
 	</div>
 </div>
