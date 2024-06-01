@@ -3,7 +3,7 @@ import type { Cookies } from '@sveltejs/kit';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import type { Deck } from './games/blackjack/deck';
 
-interface Session {
+export interface Session {
 	userId: string;
 	balance: number;
 	lastUpdate: number;
