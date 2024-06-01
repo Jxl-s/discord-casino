@@ -35,7 +35,12 @@
 	{!faceDown ? 'bg-dark-3/50 ' + suitColors[suit] : 'bg-dark-3/20'}"
 >
 	{#if faceDown}
-		<div style="height: 60px; width: 40px;" class="bg-black/30 rounded-md"></div>
+		<div
+			style="height: 60px; width: 40px;"
+			class="bg-black/30 rounded-md flex items-center justify-center"
+		>
+			??
+		</div>
 	{:else}
 		<span class="text-lg">{value}</span>
 		<SuitComponent class="w-4 h-4" />
