@@ -5,6 +5,7 @@
 	import { getHandValue } from '$lib/games/blackjack/deck';
 	import type { Card as ICard } from '$lib/games/blackjack/deck';
 	import Table from './Table.svelte';
+	import numberWithCommas from '$lib/numberWithCommas';
 
 	enum GameStatus {
 		None,
@@ -105,6 +106,7 @@
 
 		if (responseJson.result === 'blackjack') {
 			gameStatus = GameStatus.Blackjack;
+			// roundStarted = false;
 			playerTurn = false;
 		}
 	}
@@ -191,6 +193,53 @@
 			gameStarted = false;
 		}
 	}
+
+	async function doubleDown() {
+		playerTurn = false;
+		const response = await fetch('/api/games/blackjack/round/doubleDown', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		playerTurn = true;
+		if (!response.ok) {
+			console.error('Failed to double down');
+			return;
+		}
+
+		const responseJson = await response.json();
+		balance.set(responseJson.balance);
+		playerHand = responseJson.playerHand;
+
+		if (responseJson.dealerHand) {
+			dealerHand = responseJson.dealerHand;
+		}
+
+		if (responseJson.result === 'lose') {
+			gameStatus = GameStatus.Lose;
+			playerTurn = false;
+			gameStarted = false;
+		} else if (responseJson.result === 'win') {
+			gameStatus = GameStatus.Win;
+			playerTurn = false;
+			gameStarted = false;
+		} else if (responseJson.result === 'blackjack') {
+			gameStatus = GameStatus.Blackjack;
+			playerTurn = false;
+			gameStarted = false;
+		} else if (responseJson.result === 'tie') {
+			gameStatus = GameStatus.Tie;
+			playerTurn = false;
+			gameStarted = false;
+		} else if (responseJson.result === '21') {
+			playerTurn = false;
+			gameStarted = false;
+		}
+
+		betAmount *= 2;
+	}
 </script>
 
 <h1 class="text-2xl font-bold">Blackjack</h1>
@@ -225,7 +274,7 @@
 	</div>
 
 	{#if gameStarted}
-		{#if roundStarted}
+		{#if roundStarted && gameStatus === GameStatus.None}
 			<div class="flex gap-2 mt-2">
 				<Button
 					class="w-full font-semibold py-2"
@@ -237,11 +286,14 @@
 					disabled={!roundStarted || !playerTurn}
 					on:click={stand}>Stand</Button
 				>
-				<Button class="w-full font-semibold py-2" disabled={!roundStarted || !playerTurn}
-					>Double Down</Button
+				<Button
+					class="w-full font-semibold py-2"
+					disabled={!roundStarted || !playerTurn || playerHand.length !== 2 || $balance < betAmount}
+					on:click={doubleDown}>Double Down</Button
 				>
 			</div>
-		{:else}
+			<p class="text-center text-sm">Current bet: ${numberWithCommas(betAmount)}</p>
+		{:else if !roundStarted}
 			<label for="coinflip-bet-amount">Bet Amount</label>
 			<div class="grid grid-cols-2 gap-2">
 				<div>
@@ -267,7 +319,9 @@
 			on:click={handleStartGame}
 			disabled={gameStarting}>Start Game</Button
 		>
-	{:else}
+	{/if}
+
+	{#if gameStatus !== GameStatus.None}
 		<Button class="w-full font-semibold py-2 mt-3" on:click={() => reset()} disabled={gameStarting}
 			>Do Another Game</Button
 		>

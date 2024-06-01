@@ -28,6 +28,10 @@ export async function POST({ cookies, request }) {
 		const { deck } = blackjackSession;
 		blackjackSession.started = true;
 		blackjackSession.playerHand = [deck.getCard(), deck.getCard()];
+		// blackjackSession.playerHand = [
+		// 	{ value: '10', suit: 'Hearts' },
+		// 	{ value: 'A', suit: 'Hearts' }
+		// ]; for testing blackjack case
 		blackjackSession.dealerHand = [deck.getCard(), deck.getCard()];
 
 		// Handle blackjack

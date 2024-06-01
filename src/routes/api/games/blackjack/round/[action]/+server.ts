@@ -25,7 +25,7 @@ function dealerTurn(dealerHand: Card[], deck: Deck) {
 	return dealerHand;
 }
 
-async function hit(session: Session) {
+async function hit(session: Session, doubleDown = false) {
 	const blackjackSession = getBlackjackSession(session.userId);
 	if (!blackjackSession) return error(404, 'Blackjack session not found');
 
@@ -78,6 +78,17 @@ async function hit(session: Session) {
 		}
 	}
 
+	if (doubleDown) {
+		blackjackSession.started = false;
+		const dealerValue = getHandValue(dealerTurn(blackjackSession.dealerHand, deck));
+		if (getHandValue(blackjackSession.playerHand) > dealerValue) {
+			session.balance += blackjackSession.amount * 2;
+			roundStatus = 'win';
+		} else {
+			roundStatus = 'lose';
+		}
+	}
+
 	return json({
 		balance: session.balance,
 		playerHand: blackjackSession.playerHand,
@@ -122,11 +133,22 @@ async function stand(session: Session) {
 async function doubleDown(session: Session) {
 	const blackjackSession = getBlackjackSession(session.userId);
 	if (!blackjackSession) return error(404, 'Blackjack session not found');
-
 	if (!blackjackSession.started) return error(400, 'Round has not started yet');
-	if (isRoundFinished(blackjackSession.playerHand, blackjackSession.dealerHand) !== 'ok') {
-		return error(400, 'Round is already finished');
+
+	if (blackjackSession.playerHand.length !== 2)
+		return error(400, 'Can only double down on the first turn');
+
+	// Make sure they have enough money to double down
+	if (session.balance < blackjackSession.amount) {
+		return error(400, 'Not enough money to double down');
 	}
+
+	// Double the bet
+	session.balance -= blackjackSession.amount;
+	blackjackSession.amount *= 2;
+
+	// Hit and stand
+	return hit(session, true);
 }
 
 export async function POST({ cookies, params }) {
