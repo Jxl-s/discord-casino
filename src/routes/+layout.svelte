@@ -12,6 +12,7 @@
 		setupDiscordSdk();
 	});
 
+	// Handle view transitions
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
 
@@ -33,5 +34,7 @@
 {:else}
 	<!-- Show the welcoming page -->
 	<Header />
-	<slot />
+	<main class="flex-grow flex items-center justify-center flex-col">
+		<slot />
+	</main>
 {/if}

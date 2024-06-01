@@ -8,6 +8,10 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	interface Document {
+		startViewTransition: (callback: () => void) => void;
+	}
 }
 
 export {};
