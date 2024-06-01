@@ -64,7 +64,7 @@
 			Balance: ${numberWithCommas($balance)}
 		</span>
 		{#if $balance <= 0}
-			<Button theme="secondary" className="py-1 px-2 ms-2 font-semibold" on:click={handleReset}>
+			<Button theme="secondary" class="py-1 px-2 ms-2 font-semibold" on:click={handleReset}>
 				Reset?
 			</Button>
 		{/if}

@@ -84,7 +84,7 @@
 	{#if errorText}
 		<p class="text-red-500">{errorText}</p>
 	{/if}
-	<Button className="py-2 font-semibold" on:click={flipCoin}>Flip Coin</Button>
+	<Button class="py-2 font-semibold" on:click={flipCoin}>Flip Coin</Button>
 	{#if betResult !== BetStatus.None}
 		<div class="fixed w-full h-full bg-black/50 top-0 left-0 flex items-center justify-center">
 			<div class="max-w-xl w-full bg-dark-2 rounded-lg pt-2 pb-4 px-4">
@@ -108,7 +108,7 @@
 							${numberWithCommas(betAmount)}
 						</span>. Your current balance is ${numberWithCommas($balance)}
 					</p>
-					<Button className="py-2 mt-2 w-full" on:click={() => (betResult = BetStatus.None)}
+					<Button class="py-2 mt-2 w-full" on:click={() => (betResult = BetStatus.None)}
 						>Close</Button
 					>
 				{/if}
